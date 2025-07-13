@@ -1,0 +1,38 @@
+{
+  "dependencies": [
+    {
+      "name": "discord_rpc",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/comatoasterstrudel/linc_discord-rpc"
+    },
+    {
+      "name": "flixel",
+      "type": "haxelib",
+      "version": "5.8.0"
+    },
+    {
+      "name": "flixel-addons",
+      "type": "haxelib",
+      "version": "3.2.3"
+    },
+    {
+      "name": "lime",
+      "type": "haxelib",
+      "version": "8.2.2"
+    },
+    {
+      "name": "openfl",
+      "type": "haxelib",
+      "version": "9.4.1"
+    },
+    {
+      "name": "textbox",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/comatoasterstrudel/Textbox"
+    }
+  ]
+}
