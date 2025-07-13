@@ -8,7 +8,7 @@ class PcControls {
     
     public static var keyboardControls:Map<String, Array<FlxKey>> = [
 		'ACCEPT' => [SPACE, ENTER, Z],
-        'BACK' => [ESCAPE],
+		'BACK' => [ESCAPE, BACKSPACE, X],
         'LEFT' => [A, LEFT],
         'RIGHT' => [D, RIGHT],
         'UP' => [W, UP],

@@ -125,7 +125,10 @@ class MenuState extends FlxState
                 FlxG.switchState(PlayState.new);
             case 'Customize':
                 busy = true;
-                
+				openSubState(new CustomizeSubState(function():Void
+				{
+					busy = false;
+				}));
             #if desktop
             case 'Exit':
                 Sys.exit(0);

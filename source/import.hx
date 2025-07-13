@@ -2,6 +2,7 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.FlxSubState;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
@@ -16,9 +17,9 @@ import kindblastr.game.PlayState;
 import kindblastr.game.player.Hat;
 import kindblastr.game.player.Player;
 import kindblastr.helpers.Utilities;
+import kindblastr.menu.CustomizeSubState;
 import kindblastr.menu.MenuState;
 import openfl.display.Sprite;
-
 #if android
 import kindblastr.controls.MobileControls;
 #end
