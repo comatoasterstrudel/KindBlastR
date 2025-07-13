@@ -27,6 +27,7 @@ class MobileControls extends FlxTypedGroup<FlxButton>
 		buttonRight.antialiasing = false;
 		buttonRight.color = FlxColor.RED;
 		buttonRight.alpha = 0;
+		buttonRight.flipX = true;
 		add(buttonRight);
    	}
 	

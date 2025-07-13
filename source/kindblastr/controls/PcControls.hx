@@ -7,7 +7,7 @@ class PcControls {
     public static var controlsList:Array<String> = ['ACCEPT', 'BACK', 'CREDITS', 'LEFT', 'RIGHT', 'UP', 'DOWN', "LEFT2", "RIGHT2", "UP2", "DOWN2"];
     
     public static var keyboardControls:Map<String, Array<FlxKey>> = [
-        'ACCEPT' => [SPACE],
+		'ACCEPT' => [SPACE, ENTER, Z],
         'BACK' => [ESCAPE],
         'LEFT' => [A, LEFT],
         'RIGHT' => [D, RIGHT],

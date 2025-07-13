@@ -23,6 +23,11 @@
       "version": "4.3.2"
     },
     {
+      "name": "hxcpp-debug-server",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "lime",
       "type": "haxelib",
       "version": "8.2.2"
