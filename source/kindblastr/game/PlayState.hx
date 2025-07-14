@@ -21,9 +21,12 @@ class PlayState extends FlxState
 	/**
 	 * the controls for mobile version
 	 */
-	var mobileControls:MobileControls;
+	var mobileControls:MobileControls;	
 	#end
 	
+	var exitButton:FlxButton;
+
+		
 	override public function create()
 	{
 		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.GRAY);
@@ -40,6 +43,19 @@ class PlayState extends FlxState
 		add(mobileControls);
 		#end
 		
+		exitButton = new FlxButton(0, 0, function():Void
+		{
+			leaveGame();
+		});
+		exitButton.loadGraphic('assets/images/mobilecontrols/exit.png');
+		// exitButton.scale.set(1.5, 1.5);
+		exitButton.updateHitbox();
+		exitButton.antialiasing = false;
+		exitButton.y = 2;
+		exitButton.x = FlxG.width - exitButton.width - 2;
+		exitButton.alpha = .3;
+		add(exitButton);
+		
 		super.create();
 	}
 
@@ -47,6 +63,10 @@ class PlayState extends FlxState
 	{
 		#if desktop
 		player.movePlayer(PcControls.getControl('LEFT', 'HOLD'), PcControls.getControl('RIGHT', 'HOLD'));
+		if (PcControls.getControl('BACK', 'RELEASE'))
+		{
+			leaveGame();
+		}
 		#end
 		
 		#if android
@@ -54,5 +74,9 @@ class PlayState extends FlxState
 		#end
 		
 		super.update(elapsed);
+	}
+	function leaveGame():Void
+	{
+		FlxG.switchState(MenuState.new);
 	}
 }
