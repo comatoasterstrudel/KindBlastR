@@ -20,7 +20,7 @@ class Player extends FlxSprite
         antialiasing = false;
         screenCenter(X);
 		y = FlxG.height - 150;
-        color = FlxColor.YELLOW; //SET COLOR LATER
+		color = SaveData.savedColor;
     }
     
     /**

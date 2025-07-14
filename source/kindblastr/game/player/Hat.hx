@@ -42,8 +42,8 @@ class Hat extends FlxSprite{
             setPosition(player.x + offsetX, player.y + offsetY);            
         }
         
-		this.x = Utilities.lerpThing(this.x, player.x + offsetX, elapsed, 30);
-		this.y = Utilities.lerpThing(this.y, player.y + offsetY, elapsed, 30);
+		this.x = player.x + offsetX;
+		this.y = player.y + offsetY;
 		this.angle = player.angle;
     }
 }

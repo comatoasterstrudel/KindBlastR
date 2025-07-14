@@ -8,6 +8,7 @@ import flixel.input.gamepad.FlxGamepad;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -21,6 +22,7 @@ import kindblastr.helpers.Utilities;
 import kindblastr.menu.CustomizeSubState;
 import kindblastr.menu.MenuState;
 import openfl.display.Sprite;
+
 #if android
 import kindblastr.controls.MobileControls;
 #end

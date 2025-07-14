@@ -62,6 +62,30 @@ class CustomizeSubState extends FlxSubState
 	 */
 	var hatText:FlxText;
     
+	/**
+	 * the player who tries on some new colors
+	 */
+	var colorTester:Player;
+
+	/**
+	 * the list of available colors
+	 */
+	var colorList:Array<FlxColor> = [FlxColor.YELLOW, FlxColor.RED, FlxColor.WHITE, FlxColor.BLUE, FlxColor.CYAN];
+
+	/**
+	 * which color you have selected
+	 */
+	var selectedColor:Int = 0;
+
+	/**
+	 * the text that shows the description of your color
+	 */
+	var colorText:FlxText;
+
+	var splatSound:FlxSound;
+
+	var clotheSound:FlxSound;
+	
 	#if desktop
     /**
      * which option is selected on the main menu
@@ -76,11 +100,7 @@ class CustomizeSubState extends FlxSubState
     /**
      * hat customize sprite
      */
-    var hatsSprite:FlxSprite;
-	/**
-	 * which option is selected
-	 */
-	var curSelected:Int = 0;
+	var hatsSprite:FlxSprite;
 
 	/**
 	 * list of the sprites
@@ -107,6 +127,9 @@ class CustomizeSubState extends FlxSubState
 	var hatLeft:FlxButton;
 
 	var hatRight:FlxButton;
+	var colorLeft:FlxButton;
+
+	var colorRight:FlxButton;
 	#end
     
     public function new(endFunction:Void->Void):Void{
@@ -175,6 +198,30 @@ class CustomizeSubState extends FlxSubState
 
 		changeSelectedHat();
 
+		for (i in 0...colorList.length)
+		{
+			if (SaveData.savedColor == colorList[i])
+			{
+				selectedColor = i;
+			}
+		}
+
+		colorTester = new Player();
+		colorTester.scale.set(4, 4);
+		colorTester.updateHitbox();
+		colorTester.screenCenter();
+		add(colorTester);
+		colorSprites.push(colorTester);
+
+		colorText = new FlxText(0, 0, 0, 'Customize what?', 40);
+		colorText.setFormat('assets/fonts/andy.ttf', 25, FlxColor.WHITE);
+		colorText.screenCenter(X);
+		colorText.y = 400;
+		add(colorText);
+		colorSprites.push(colorText);
+
+		changeSelectedColor();
+		
 		customizeText = new FlxText(0, 0, 0, 'Customize what?', 40);
 		customizeText.setFormat('assets/fonts/andy.ttf', 40, FlxColor.WHITE);
 		customizeText.screenCenter(X);
@@ -240,13 +287,44 @@ class CustomizeSubState extends FlxSubState
 
 		hatSprites.push(hatRight);
 
+		colorLeft = new FlxButton(0, 0, function():Void
+		{
+			changeSelectedColor(-1);
+		});
+		colorLeft.loadGraphic('assets/images/mobilecontrols/hatselect.png');
+		colorLeft.scale.set(1.5, 1.5);
+		colorLeft.updateHitbox();
+		colorLeft.antialiasing = false;
+		colorLeft.screenCenter();
+		colorLeft.x -= 400;
+		colorLeft.alpha = .6;
+		add(colorLeft);
+
+		colorSprites.push(colorLeft);
+
+		colorRight = new FlxButton(0, 0, function():Void
+		{
+			changeSelectedColor(1);
+		});
+		colorRight.loadGraphic('assets/images/mobilecontrols/hatselect.png');
+		colorRight.flipX = true;
+		colorRight.scale.set(1.5, 1.5);
+		colorRight.updateHitbox();
+		colorRight.antialiasing = false;
+		colorRight.screenCenter();
+		colorRight.x += 400;
+		colorRight.alpha = .6;
+		add(colorRight);
+
+		colorSprites.push(colorRight);
+
 		backButton = new FlxButton(0, 0, function():Void
 		{
 			switch (curMenu)
 			{
 				case 'main':
 					leave();
-				case 'hat':
+				case 'hat' | 'color':
 					addMainMenu();
 			}
 		});
@@ -278,10 +356,10 @@ class CustomizeSubState extends FlxSubState
 				}
 				if (PcControls.getControl('ACCEPT', 'RELEASE'))
 				{
-					switch (curSelected)
+					switch (mainCurSelected)
 					{
 						case 0:
-
+							addColorsMenu();
 						case 1:
 							addHatsMenu();
 					}
@@ -289,6 +367,19 @@ class CustomizeSubState extends FlxSubState
                 if(PcControls.getControl('BACK', 'RELEASE')){
                     leave();
                 }
+			case 'color':
+				if (PcControls.getControl('LEFT', 'RELEASE'))
+				{
+					changeSelectedColor(-1);
+				}
+				if (PcControls.getControl('RIGHT', 'RELEASE'))
+				{
+					changeSelectedColor(1);
+				}
+				if (PcControls.getControl('BACK', 'RELEASE'))
+				{
+					addMainMenu();
+				}
 			case 'hat':
 				if (PcControls.getControl('LEFT', 'RELEASE'))
 				{
@@ -326,6 +417,26 @@ class CustomizeSubState extends FlxSubState
 				hatRight.visible = true;
 			}
 		}
+		if (curMenu == 'color')
+		{
+			if (selectedColor == 0)
+			{
+				colorLeft.visible = false;
+			}
+			else
+			{
+				colorLeft.visible = true;
+			}
+
+			if (selectedColor == colorList.length - 1)
+			{
+				colorRight.visible = false;
+			}
+			else
+			{
+				colorRight.visible = true;
+			}
+		}
 		#end
 		if (curMenu == 'hat')
 		{
@@ -336,6 +447,66 @@ class CustomizeSubState extends FlxSubState
 				i.angle = Utilities.lerpThing(i.angle, 0, elapsed, 5);
 			}
 		}
+		if (curMenu == 'color')
+		{
+			colorTester.angle = Utilities.lerpThing(colorTester.angle, 0, elapsed, 5);
+		}
+	}
+
+	function changeSelectedColor(amount:Int = 0):Void
+	{
+		if (selectedColor + amount >= colorList.length)
+			return;
+		if (selectedColor + amount < 0)
+			return;
+
+		selectedColor += amount;
+
+		colorTester.angle = 0;
+
+		if (amount != 0)
+		{
+			if (splatSound != null && splatSound.active)
+				splatSound.pause();
+
+			splatSound = FlxG.sound.play('assets/sounds/splat.ogg', .4);
+			splatSound.pitch = FlxG.random.float(.7, 1.3);
+
+			if (amount > 0)
+			{
+				colorTester.angle = 20;
+			}
+			else
+			{
+				colorTester.angle = -20;
+			}
+		}
+
+		SaveData.savedColor = colorList[selectedColor];
+
+		switch (colorList[selectedColor])
+		{
+			case FlxColor.YELLOW:
+				colorText.text = '- Yellow -\nYour true self.. but it\'s okay to express yourself, too!';
+			case FlxColor.RED:
+				colorText.text = '- Red -\nAngry, are you?!';
+			case FlxColor.WHITE:
+				colorText.text = '- White -\n255 255 255';
+			case FlxColor.BLUE:
+				colorText.text = '- Blue -\nWater.. so nice!';
+			case FlxColor.CYAN:
+				colorText.text = '- Cyan -\nIs it green or blue?';
+		}
+
+		colorText.color = colorList[selectedColor];
+
+		colorTester.color = colorList[selectedColor];
+
+		SaveData.savedColor = colorList[selectedColor];
+
+		colorText.y = 400;
+		colorText.scale.x = 1.1;
+		colorText.screenCenter(X);
 	}
 
 	function changeSelectedHat(amount:Int = 0):Void
@@ -359,6 +530,12 @@ class CustomizeSubState extends FlxSubState
 
 				if (amount != 0)
 				{
+					if (clotheSound != null && clotheSound.active)
+						clotheSound.pause();
+
+					clotheSound = FlxG.sound.play('assets/sounds/clothes.ogg');
+					clotheSound.pitch = FlxG.random.float(.7, 1.3);
+			
 					if (amount > 0)
 					{
 						i.angle = 20;
@@ -383,7 +560,7 @@ class CustomizeSubState extends FlxSubState
 		{
 			case 'Bald':
 				hatText.text = '- Bald -\nYour true self.. but it\'s okay to express yourself, too!';
-				hatText.color = FlxColor.YELLOW;
+				hatText.color = SaveData.savedColor;
 			case 'Basic Cap':
 				hatText.text = '- Basic Cap -\nA nice red hat. Simple but pleasing!';
 				hatText.color = FlxColor.RED;
@@ -409,16 +586,16 @@ class CustomizeSubState extends FlxSubState
 	#if desktop
 	function changeSelection(amount:Int = 0):Void
 	{
-		curSelected += amount;
+		mainCurSelected += amount;
 
-		if (curSelected >= spriteList.length)
-			curSelected = 0;
-		if (curSelected < 0)
-			curSelected = spriteList.length - 1;
+		if (mainCurSelected >= spriteList.length)
+			mainCurSelected = 0;
+		if (mainCurSelected < 0)
+			mainCurSelected = spriteList.length - 1;
 
 		for (i in spriteList)
 		{
-			if (i.ID == curSelected)
+			if (i.ID == mainCurSelected)
 				i.alpha = 1;
 			else
 				i.alpha = .2;
@@ -452,10 +629,40 @@ class CustomizeSubState extends FlxSubState
 	}
 
 	/**
+	 * call this to add the colors menu
+	 */
+	function addColorsMenu():Void
+	{
+		curMenu = 'color';
+
+		for (i in mainSprites)
+		{
+			i.visible = false;
+		}
+
+		for (i in colorSprites)
+		{
+			i.visible = true;
+		}
+
+		for (i in hatSprites)
+		{
+			i.visible = false;
+		}
+
+		customizeText.text = 'Customize your Color!';
+		customizeText.screenCenter(X);
+
+		changeSelectedColor();
+	}
+	
+	/**
 	 * call this to add the main menu
 	 */
 	function addHatsMenu():Void
 	{
+		hatTester.color = SaveData.savedColor;
+		
 		curMenu = 'hat';
 
 		for (i in mainSprites)
