@@ -15,7 +15,7 @@
     {
       "name": "flixel-addons",
       "type": "haxelib",
-      "version": "3.2.3"
+      "version": null
     },
     {
       "name": "hxcpp",
@@ -26,6 +26,11 @@
       "name": "hxcpp-debug-server",
       "type": "haxelib",
       "version": null
+    },
+    {
+      "name": "install",
+      "type": "haxelib",
+      "version": "flixel-addons"
     },
     {
       "name": "lime",

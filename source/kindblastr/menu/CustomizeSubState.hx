@@ -132,6 +132,8 @@ class CustomizeSubState extends FlxSubState
 	var colorRight:FlxButton;
 	#end
     
+	var busy:Bool = false;
+	
     public function new(endFunction:Void->Void):Void{
         super();
         
@@ -142,6 +144,12 @@ class CustomizeSubState extends FlxSubState
         add(fadeSprite);
 
 		#if desktop
+		busy = true;
+		new FlxTimer().start(.1, function(f):Void
+		{
+			busy = false;
+		});
+		
 		colorsSprite = new FlxSprite().loadGraphic('assets/images/menu/customize/colorchange.png');
 		colorsSprite.scale.set(2, 2);
 		colorsSprite.antialiasing = false;
@@ -231,7 +239,7 @@ class CustomizeSubState extends FlxSubState
 		#if android
 		colorsButton = new FlxButton(0, 0, function():Void
 		{
-			//
+			addColorsMenu();
 		});
 		colorsButton.loadGraphic('assets/images/menu/customize/colorchange.png');
 		colorsButton.scale.set(1.7, 1.7);
@@ -320,6 +328,8 @@ class CustomizeSubState extends FlxSubState
 
 		backButton = new FlxButton(0, 0, function():Void
 		{
+			FlxG.sound.play('assets/sounds/uiback.ogg', .35).persist = true;
+
 			switch (curMenu)
 			{
 				case 'main':
@@ -344,55 +354,63 @@ class CustomizeSubState extends FlxSubState
         super.update(elapsed);
         
         #if desktop
-        switch(curMenu){
-            case 'main':
-				if (PcControls.getControl('LEFT', 'RELEASE'))
-				{
-					changeSelection(-1);
-				}
-				if (PcControls.getControl('RIGHT', 'RELEASE'))
-				{
-					changeSelection(1);
-				}
-				if (PcControls.getControl('ACCEPT', 'RELEASE'))
-				{
-					switch (mainCurSelected)
+		if (!busy)
+		{
+			switch (curMenu)
+			{
+				case 'main':
+					if (PcControls.getControl('LEFT', 'RELEASE'))
 					{
-						case 0:
-							addColorsMenu();
-						case 1:
-							addHatsMenu();
+						changeSelection(-1);
 					}
-                }
-                if(PcControls.getControl('BACK', 'RELEASE')){
-                    leave();
-                }
-			case 'color':
-				if (PcControls.getControl('LEFT', 'RELEASE'))
-				{
-					changeSelectedColor(-1);
-				}
-				if (PcControls.getControl('RIGHT', 'RELEASE'))
-				{
-					changeSelectedColor(1);
-				}
-				if (PcControls.getControl('BACK', 'RELEASE'))
-				{
-					addMainMenu();
-				}
-			case 'hat':
-				if (PcControls.getControl('LEFT', 'RELEASE'))
-				{
-					changeSelectedHat(-1);
-				}
-				if (PcControls.getControl('RIGHT', 'RELEASE'))
-				{
-					changeSelectedHat(1);
-				}
-				if (PcControls.getControl('BACK', 'RELEASE'))
-				{
-					addMainMenu();
-				}
+					if (PcControls.getControl('RIGHT', 'RELEASE'))
+					{
+						changeSelection(1);
+					}
+					if (PcControls.getControl('ACCEPT', 'RELEASE'))
+					{
+						switch (mainCurSelected)
+						{
+							case 0:
+								addColorsMenu();
+							case 1:
+								addHatsMenu();
+						}
+					}
+					if (PcControls.getControl('BACK', 'RELEASE'))
+					{
+						FlxG.sound.play('assets/sounds/uiback.ogg', .35).persist = true;
+						leave();
+					}
+				case 'color':
+					if (PcControls.getControl('LEFT', 'RELEASE'))
+					{
+						changeSelectedColor(-1);
+					}
+					if (PcControls.getControl('RIGHT', 'RELEASE'))
+					{
+						changeSelectedColor(1);
+					}
+					if (PcControls.getControl('BACK', 'RELEASE'))
+					{
+						FlxG.sound.play('assets/sounds/uiback.ogg', .35).persist = true;
+						addMainMenu();
+					}
+				case 'hat':
+					if (PcControls.getControl('LEFT', 'RELEASE'))
+					{
+						changeSelectedHat(-1);
+					}
+					if (PcControls.getControl('RIGHT', 'RELEASE'))
+					{
+						changeSelectedHat(1);
+					}
+					if (PcControls.getControl('BACK', 'RELEASE'))
+					{
+						FlxG.sound.play('assets/sounds/uiback.ogg', .35).persist = true;
+						addMainMenu();
+					}
+			}
 		}
 		#end
 
@@ -600,6 +618,10 @@ class CustomizeSubState extends FlxSubState
 			else
 				i.alpha = .2;
 		}
+		if (amount != 0)
+		{
+			FlxG.sound.play('assets/sounds/uiscroll.ogg', 0.5).persist = true;
+		}
 	}
 	#end
 	/**
@@ -633,6 +655,8 @@ class CustomizeSubState extends FlxSubState
 	 */
 	function addColorsMenu():Void
 	{
+		FlxG.sound.play('assets/sounds/uiselect.ogg', 1).persist = true;
+
 		curMenu = 'color';
 
 		for (i in mainSprites)
@@ -661,6 +685,8 @@ class CustomizeSubState extends FlxSubState
 	 */
 	function addHatsMenu():Void
 	{
+		FlxG.sound.play('assets/sounds/uiselect.ogg', 1).persist = true;
+		
 		hatTester.color = SaveData.savedColor;
 		
 		curMenu = 'hat';

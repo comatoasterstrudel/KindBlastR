@@ -55,17 +55,17 @@ class Player extends FlxSprite
 			}
 			else
 			{
-				targetedAngle = Utilities.lerpThing(targetedAngle, 10, elapsed, 5);
+				if (flipX)
+				{
+					targetedAngle = Utilities.lerpThing(targetedAngle, 10, elapsed, 5);
+				}
+				else
+				{
+					targetedAngle = Utilities.lerpThing(targetedAngle, -10, elapsed, 5);
+				}
 			}
 
-			if (flipX)
-			{
-				angle = targetedAngle;
-			}
-			else
-			{
-				angle = -targetedAngle;
-			}   
+			angle = targetedAngle; 
         }
     }
 }
