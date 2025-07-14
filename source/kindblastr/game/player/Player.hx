@@ -9,6 +9,8 @@ class Player extends FlxSprite
     
     var targetedAngle:Float = 0;
     
+	var movedBefore:Bool = false;
+    
     public function new():Void{
         super();
         
@@ -17,7 +19,7 @@ class Player extends FlxSprite
         updateHitbox();
         antialiasing = false;
         screenCenter(X);
-        y = FlxG.height - 80;
+		y = FlxG.height - 150;
         color = FlxColor.YELLOW; //SET COLOR LATER
     }
     
@@ -27,6 +29,8 @@ class Player extends FlxSprite
      * @param right moving right?
      */
     public function movePlayer(left:Bool, right:Bool):Void{
+		movedBefore = true;
+        
         velocity.x = 0;
         
 		if(left && !right){
@@ -43,16 +47,25 @@ class Player extends FlxSprite
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
-        if(velocity.x == 0){
-            targetedAngle = Utilities.lerpThing(targetedAngle, 0, elapsed, 5);            
-        } else {
-            targetedAngle = Utilities.lerpThing(targetedAngle, 10, elapsed, 5);            
-        }
-        
-        if(flipX){
-            angle = targetedAngle;    
-        } else {
-            angle = -targetedAngle;
+		if (movedBefore)
+		{
+			if (velocity.x == 0)
+			{
+				targetedAngle = Utilities.lerpThing(targetedAngle, 0, elapsed, 5);
+			}
+			else
+			{
+				targetedAngle = Utilities.lerpThing(targetedAngle, 10, elapsed, 5);
+			}
+
+			if (flipX)
+			{
+				angle = targetedAngle;
+			}
+			else
+			{
+				angle = -targetedAngle;
+			}   
         }
     }
 }

@@ -16,6 +16,7 @@ import flixel.util.FlxColor;
 import kindblastr.game.PlayState;
 import kindblastr.game.player.Hat;
 import kindblastr.game.player.Player;
+import kindblastr.helpers.SaveData;
 import kindblastr.helpers.Utilities;
 import kindblastr.menu.CustomizeSubState;
 import kindblastr.menu.MenuState;

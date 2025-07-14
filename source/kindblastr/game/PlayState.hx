@@ -32,7 +32,7 @@ class PlayState extends FlxState
 		player = new Player();
 		add(player);
 		
-		hat = new Hat('Basic Cap', player);
+		hat = new Hat(SaveData.savedHat, player);
 		add(hat);
 		
 		#if android

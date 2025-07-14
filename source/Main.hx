@@ -9,5 +9,6 @@ class Main extends Sprite
 		#if desktop
 		FlxG.mouse.visible = false;
 		#end
+		SaveData.load();
 	}
 }

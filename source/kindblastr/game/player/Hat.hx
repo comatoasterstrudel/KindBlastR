@@ -34,12 +34,7 @@ class Hat extends FlxSprite{
         
         var offsetX:Float = 0;
         var offsetY:Float = 0;
-        
-        switch(hatName){
-            case 'Basic Cap':
-                offsetY = -32;
-        }
-        
+
         offsetY += hatOffset;
         
         if(!snapped){
@@ -47,7 +42,8 @@ class Hat extends FlxSprite{
             setPosition(player.x + offsetX, player.y + offsetY);            
         }
         
-        this.x = Utilities.lerpThing(this.x, player.x + offsetX, elapsed, 25);
-        this.y = Utilities.lerpThing(this.y, player.y + offsetY, elapsed, 25);
+		this.x = Utilities.lerpThing(this.x, player.x + offsetX, elapsed, 30);
+		this.y = Utilities.lerpThing(this.y, player.y + offsetY, elapsed, 30);
+		this.angle = player.angle;
     }
 }
