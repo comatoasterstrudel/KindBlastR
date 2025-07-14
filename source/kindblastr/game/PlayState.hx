@@ -41,20 +41,19 @@ class PlayState extends FlxState
 		#if android
 		mobileControls = new MobileControls();
 		add(mobileControls);
-		#end
 		
 		exitButton = new FlxButton(0, 0, function():Void
 		{
 			leaveGame();
 		});
 		exitButton.loadGraphic('assets/images/mobilecontrols/exit.png');
-		// exitButton.scale.set(1.5, 1.5);
 		exitButton.updateHitbox();
 		exitButton.antialiasing = false;
 		exitButton.y = 2;
 		exitButton.x = FlxG.width - exitButton.width - 2;
 		exitButton.alpha = .3;
 		add(exitButton);
+		#end
 		
 		super.create();
 	}
