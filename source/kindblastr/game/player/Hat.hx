@@ -26,7 +26,10 @@ class Hat extends FlxSprite{
         updateHitbox();
         antialiasing = false;
         
-        FlxTween.tween(this, {hatOffset: 2}, 3, {ease: FlxEase.smoothStepInOut, type: PINGPONG});
+		var dontMove:Array<String> = ['Strand Cap', 'Cotton Cap'];
+
+		if (!dontMove.contains(hatName))
+			FlxTween.tween(this, {hatOffset: 2}, 3, {ease: FlxEase.smoothStepInOut, type: PINGPONG});
     }
     
     override public function update(elapsed:Float):Void{

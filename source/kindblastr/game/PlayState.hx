@@ -1,5 +1,7 @@
 package kindblastr.game;
 
+import kindblastr.game.weapons.BlasterWeapon;
+
 class PlayState extends FlxState
 {
 	/**
@@ -37,6 +39,16 @@ class PlayState extends FlxState
 		
 		hat = new Hat(SaveData.savedHat, player);
 		add(hat);
+		
+		switch ('Blaster') // weapons
+		{
+			case 'Blaster':
+				var leftHand = new BlasterWeapon(player, false);
+				add(leftHand);
+
+				var rightHand = new BlasterWeapon(player, true);
+				add(rightHand);
+		}
 		
 		#if android
 		mobileControls = new MobileControls();

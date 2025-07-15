@@ -40,7 +40,15 @@ class CustomizeSubState extends FlxSubState
 	/**
 	 * list of all hats
 	 */
-	var hatList:Array<String> = ['Bald', 'Basic Cap', 'Rock Cap', 'Whimsy Cap', 'Strand Cap', 'Pizza Cap'];
+	var hatList:Array<String> = [
+		'Bald',
+		'Basic Cap',
+		'Rock Cap',
+		'Whimsy Cap',
+		'Strand Cap',
+		'Pizza Cap',
+		'Cotton Cap'
+	];
 
 	/**
 	 * the hat sprites on the hat select menu
@@ -70,7 +78,19 @@ class CustomizeSubState extends FlxSubState
 	/**
 	 * the list of available colors
 	 */
-	var colorList:Array<FlxColor> = [FlxColor.YELLOW, FlxColor.RED, FlxColor.WHITE, FlxColor.BLUE, FlxColor.CYAN];
+	var colorList:Array<FlxColor> = [
+		FlxColor.YELLOW,
+		FlxColor.ORANGE,
+		FlxColor.RED,
+		FlxColor.PURPLE,
+		FlxColor.PINK,
+		FlxColor.BLUE,
+		FlxColor.CYAN,
+		FlxColor.GREEN,
+		FlxColor.LIME,
+		FlxColor.WHITE,
+		FlxColor.GRAY,
+	];
 
 	/**
 	 * which color you have selected
@@ -506,14 +526,26 @@ class CustomizeSubState extends FlxSubState
 		{
 			case FlxColor.YELLOW:
 				colorText.text = '- Yellow -\nYour true self.. but it\'s okay to express yourself, too!';
+			case FlxColor.ORANGE:
+				colorText.text = '- Orange -\nLike the food.';
 			case FlxColor.RED:
 				colorText.text = '- Red -\nAngry, are you?!';
 			case FlxColor.WHITE:
 				colorText.text = '- White -\n255 255 255';
+			case FlxColor.PURPLE:
+				colorText.text = '- Violet -\nYou\'re turning violet, Violet!';
 			case FlxColor.BLUE:
 				colorText.text = '- Blue -\nWater.. so nice!';
 			case FlxColor.CYAN:
 				colorText.text = '- Cyan -\nIs it green or blue?';
+			case FlxColor.GREEN:
+				colorText.text = '- Green -\nNo green?';
+			case FlxColor.LIME:
+				colorText.text = '- Lime -\nLike the food.';
+			case FlxColor.PINK:
+				colorText.text = '- Pink -\nReminds me of someone..';
+			case FlxColor.GRAY:
+				colorText.text = '- Gray -\nYour color.. it\'s fading!';
 		}
 
 		colorText.color = colorList[selectedColor];
@@ -594,6 +626,10 @@ class CustomizeSubState extends FlxSubState
 			case 'Pizza Cap':
 				hatText.text = '- Pizza Cap -\nDoesn\'t look like any other pizza hat I\'ve seen..';
 				hatText.color = FlxColor.LIME;
+			case 'Cotton Cap':
+				colorText.text = '- Cotton Cap -\nReminds me of someone..';
+				colorText.color = FlxColor.PINK;
+
 		}
 
 		hatText.y = 400;
