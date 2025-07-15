@@ -627,8 +627,8 @@ class CustomizeSubState extends FlxSubState
 				hatText.text = '- Pizza Cap -\nDoesn\'t look like any other pizza hat I\'ve seen..';
 				hatText.color = FlxColor.LIME;
 			case 'Cotton Cap':
-				colorText.text = '- Cotton Cap -\nReminds me of someone..';
-				colorText.color = FlxColor.PINK;
+				hatText.text = '- Cotton Cap -\nReminds me of someone..';
+				hatText.color = FlxColor.PINK;
 
 		}
 
